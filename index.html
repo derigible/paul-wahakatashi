@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <title>Wahakatashi</title>
+    <meta charset="utf-8" />
+    <style>
+      html {
+        box-sizing: border-box;
+        font-size: 100%;
+        text-rendering: optimizelegibility;
+      }
+      body {
+        font-size: 1.5rem;
+        line-height: 1.4;
+        font-family: Arial, Helvetica, sans-serif;
+        margin: 0;
+      }
+      nav {
+        background-image: radial-gradient(
+          rgb(223, 117, 117),
+          yellow,
+          rgb(86, 241, 13)
+        );
+        font-size: 64px;
+        padding: 1rem;
+        color: blanchedalmond;
+      }
+      main {
+        background-color: #f7f9ee;
+        height: 100%;
+      }
+      section h1 {
+        margin: 0;
+        padding: 1rem;
+        font-size: 74px;
+        background: -webkit-linear-gradient(
+          yellow,
+          rgb(20, 170, 240),
+          rgb(223, 117, 117)
+        );
+      }
+      section p {
+        padding: 0 5em;
+        max-width: 30em;
+        margin: auto;
+      }
+      textarea,
+      input {
+        display: block;
+        border-radius: 5px;
+        border: 1px black solid;
+        padding: 0.25rem;
+      }
+      .align-center {
+        margin: auto;
+        text-align: center;
+      }
+      .gradient-text {
+        background: -webkit-radial-gradient(
+          rgb(13, 241, 222),
+          rgb(223, 117, 117)
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .img {
+        padding: 1em 0;
+      }
+      .flex-me {
+        display: flex;
+        justify-content: center;
+      }
+      .input {
+        padding: 0 0.5em;
+        font-size: 17.5px;
+      }
+      #wahakatashi {
+        padding-bottom: 3em;
+      }
+      #submit {
+        margin: auto;
+        margin-top: 1em;
+        padding: 1em;
+        font-size: 17.5px;
+        border: none;
+        box-shadow: 0 0 7px 1px rgb(0 0 0 / 30%);
+        background: -webkit-radial-gradient(
+          rgb(13, 241, 222),
+          rgb(223, 117, 117)
+        );
+        color: whitesmoke;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <nav class="align-center">
+        <div><em>Wahakatashi</em></div>
+      </nav>
+    </header>
+    <main class="align-center">
+      <section id="intro">
+        <h1 class="gradient-text">Who Wants to Wahakatashi??</h1>
+        <p class="gradient-text">
+          What is it you ask? Who cares! Send this man your deepest, darkest,
+          and most wonderful hopes for what it could be and let him decide!
+        </p>
+        <div class="img">
+          <img
+            srcset="assets/paul-ugh.jpg"
+            alt="Traditional Paul"
+            style="max-width: 30em"
+          />
+        </div>
+      </section>
+      <section>
+        <form id="wahakatashi" class="align-center">
+          <input
+            id="code"
+            hidden
+            style="display: none"
+            type="text"
+            name="code"
+          />
+          <div class="flex-me">
+            <div class="input">
+              <div class="input">
+                <label for="name" class="gradient-text">Name</label>
+                <input id="name" type="text" name="name" class="align-center" />
+              </div>
+              <div class="input">
+                <label for="call-sign" class="gradient-text">Call Sign</label>
+                <input
+                  id="call-sign"
+                  type="text"
+                  name="callSign"
+                  class="align-center"
+                />
+              </div>
+              <div class="input">
+                <label for="safe-word" class="gradient-text">Safe Word</label>
+                <input
+                  id="safe-word"
+                  type="text"
+                  name="safeWord"
+                  class="align-center"
+                />
+              </div>
+              <div class="input">
+                <label for="spirit-animal" class="gradient-text"
+                  >Spirit Animal</label
+                >
+                <input
+                  id="spirit-animal"
+                  type="text"
+                  name="spiritAnimal"
+                  class="align-center"
+                />
+              </div>
+            </div>
+            <div class="input">
+              <label for="whatis" class="gradient-text"
+                >Describe Wahakatashi to Me!</label
+              >
+              <textarea
+                id="whatis"
+                name="wahakatashi"
+                rows="11"
+                cols="50"
+                class="align-center"
+              ></textarea>
+            </div>
+          </div>
+          <div>
+            <input type="submit" value="Let me know!" id="submit" />
+          </div>
+        </form>
+      </section>
+    </main>
+    <script>
+      const code = new URLSearchParams(window.location.search).get('code')
+      if (code) {
+        document.getElementById('code').value = code
+      }
+
+      const value = (e, key) => {
+        debugger
+        return e.target[key].value
+      }
+
+      function submitForm(e) {
+        e.preventDefault()
+        fetch('/api/submit', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            name: value(e, 'name'),
+            callSign: value(e, 'callSign'),
+            safeWord: value(e, 'safeWord'),
+            spiritAnimal: value(e, 'spiritAnimal'),
+            wahakatashi: value(e, 'wahakatashi'),
+          }),
+        })
+      }
+
+      const form = document.getElementById('wahakatashi')
+      form.addEventListener('submit', submitForm)
+    </script>
+  </body>
+</html>
